@@ -27,5 +27,4 @@ export const removeItemFromCart = (id) => async (dispatch, getState) =>{
     })
     
     localStorage.setItem('cartItems', JSON.stringify(getState().cart.cartItems))
-    //console.log("Storage updated after deleted")
 }
