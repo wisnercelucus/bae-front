@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-//import { Link } from 'react-router-dom'
 import { Form, Button, Row, Col, Table } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -7,7 +6,7 @@ import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { getUserDetails, updateUserProfile } from '../actions/userActions'
 import { USER_UPDATE_PROFILE_RESET } from '../constants/userConstants'
-//import { listMyOrders } from '../actions/orderActions'
+import { listMyOrders } from '../actions/orderActions'
 
 function ProfileScreen({ history }) {
 
@@ -28,14 +27,9 @@ function ProfileScreen({ history }) {
     const userUpdateProfile = useSelector(state => state.userUpdateProfile)
     const { success } = userUpdateProfile
 
-    //const orderListMy = useSelector(state => state.orderListMy)
-    //const { loading: loadingOrders, error: errorOrders, orders } = orderListMy
+    const orderListMy = useSelector(state => state.orderListMy)
+    const { loading: loadingOrders, error: errorOrders, orders } = orderListMy
 
-    const errorOrders = null
-
-    const loadingOrders = null
-
-    const orders = []
 
     useEffect(() => {
         if (!userInfo) {
@@ -44,7 +38,7 @@ function ProfileScreen({ history }) {
             if (!user || !user.name || success || userInfo._id !== user._id) {
                 dispatch({ type: USER_UPDATE_PROFILE_RESET })
                 dispatch(getUserDetails('profile'))
-                //dispatch(listMyOrders())
+                dispatch(listMyOrders())
             } else {
                 setName(user.name)
                 setEmail(user.email)
@@ -55,7 +49,7 @@ function ProfileScreen({ history }) {
     const submitHandler = (e) => {
         e.preventDefault()
 
-        if (password != confirmPassword) {
+        if (password !== confirmPassword) {
             setMessage('Passwords do not match')
         } else {
             dispatch(updateUserProfile({
@@ -153,16 +147,16 @@ function ProfileScreen({ history }) {
                                 </thead>
 
                                 <tbody>
-                                    {orders?.map(order => (
-                                        <tr key={order?._id}>
-                                            <td>{order?._id}</td>
-                                            <td>{order?.createdAt.substring(0, 10)}</td>
-                                            <td>${order?.totalPrice}</td>
-                                            <td>{order?.isPaid ? order?.paidAt.substring(0, 10) : (
+                                    {orders.map(order => (
+                                        <tr key={order._id}>
+                                            <td>{order._id}</td>
+                                            <td>{order.createdAt.substring(0, 10)}</td>
+                                            <td>${order.totalPrice}</td>
+                                            <td>{order.isPaid ? order.paidAt.substring(0, 10) : (
                                                 <i className='fas fa-times' style={{ color: 'red' }}></i>
                                             )}</td>
                                             <td>
-                                                <LinkContainer to={`/order/${order?._id}`}>
+                                                <LinkContainer to={`/order/${order._id}`}>
                                                     <Button className='btn-sm'>Details</Button>
                                                 </LinkContainer>
                                             </td>
@@ -170,7 +164,7 @@ function ProfileScreen({ history }) {
                                     ))}
                                 </tbody>
                             </Table>
-                    )}
+                        )}
             </Col>
         </Row>
     )

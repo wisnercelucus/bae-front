@@ -2,7 +2,7 @@ import React, { useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col, Button, Image, ListGroup, Card, Form } from 'react-bootstrap';
 import Message  from '../components/Message';
-import { addToCart, removeItemFromCart } from '../actions/cartActions';
+import { addToCart, removeFromCart } from '../actions/cartActions';
 import { useDispatch, useSelector} from 'react-redux';
 
 
@@ -20,8 +20,8 @@ function CartScreen({match, location, history}) {
         history.push('/login?redirect=shipping')
     }
 
-    const removeFromCart = (id)=>{
-        dispatch(removeItemFromCart(id))
+    const removeFromCartHandler = (id)=>{
+        dispatch(removeFromCart(id))
     }
 
     useEffect(()=>{
@@ -67,7 +67,7 @@ function CartScreen({match, location, history}) {
                                         <Button
                                         type="button"
                                         variant="light"
-                                        onClick={ () => removeFromCart(item.product) }
+                                        onClick={ () => removeFromCartHandler(item.product) }
                                         >
                                             <i className="fas fa-trash"></i>
 
